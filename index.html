@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Español Fácil · آموزش اسپانیایی</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f5f0;--c:#fff;--t:#222;--m:#777;--a:#b03a2e;--line:#e4e0d6}
+body.dark{--bg:#1b1d22;--c:#2a2d35;--t:#eee;--m:#aaa;--line:#3a3e48}
+*{box-sizing:border-box}
+body{margin:0 auto;padding:16px;font-family:system-ui,Tahoma,sans-serif;background:var(--bg);color:var(--t);max-width:720px}
+h1{font-size:1.4rem;margin:4px 0}h1 small{font-family:Vazirmatn,Tahoma,sans-serif;color:var(--m);font-size:.85rem}
+h2{margin:14px 0 6px;font-size:1.2rem}
+.fa{font-family:Vazirmatn,Tahoma,sans-serif}
+body.nofa .fa{display:none}
+.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.stats{display:flex;gap:12px;font-size:.9rem}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+nav button{flex:1;min-width:90px}
+nav button.on{background:var(--a);color:#fff}
+.bar{display:flex;gap:12px;flex-wrap:wrap;font-size:.85rem;color:var(--m);margin-bottom:10px;align-items:center}
+select,input[type=text]{padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--c);color:var(--t);font-size:1rem}
+input[type=text]{width:100%}
+button{padding:9px 14px;border-radius:8px;border:1px solid var(--line);background:var(--c);color:var(--t);cursor:pointer;font-size:.95rem}
+button:hover{border-color:var(--a)}
+button.ghost{border-style:dashed}
+button:disabled{cursor:default}
+.card{background:var(--c);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:8px 0}
+.click{cursor:pointer}
+.row{background:var(--c);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:6px 0}
+.es{font-size:1.1rem;font-weight:700;display:flex;align-items:center;gap:8px}
+.tr{margin-top:3px}
+.en{color:var(--m)}
+.big{font-size:1.7rem;font-weight:700;text-align:center;padding:12px}
+.sp{padding:2px 8px;font-size:.85rem}
+.note{background:var(--c);border-left:4px solid var(--a);padding:8px 12px;border-radius:6px;font-size:.92rem}
+.muted{color:var(--m);font-size:.9rem}
+.flash{background:var(--c);border:2px solid var(--line);border-radius:16px;min-height:200px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px}
+.btns{display:flex;gap:10px;margin-top:12px}.btns button{flex:1}
+.opt{display:block;width:100%;text-align:left;margin:6px 0}
+.opt.good{background:#2e8b57;color:#fff;border-color:#2e8b57}
+.opt.bad{background:var(--a);color:#fff;border-color:var(--a)}
+.bar2{height:8px;background:var(--line);border-radius:6px;overflow:hidden;margin:6px 0}
+.bar2 div{height:100%;background:var(--a)}
+.stats2{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+.stats2 div{flex:1;background:var(--c);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}
+.fb{margin:10px 0;font-weight:700}
+.ph{font-family:'Doulos SIL','Charis SIL',Georgia,serif;font-size:.85rem;color:var(--m);font-weight:400}
+.toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:10px;font-size:.9rem;z-index:9;max-width:90%;text-align:center}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>Español Fácil <small>· آموزش اسپانیایی</small></h1>
+  <div class="stats"><span>⭐ XP <b id="xp">0</b></span><span>🔥 <b id="streak">0</b> days</span></div>
+</header>
+<nav id="tabs">
+  <button data-t="learn" onclick="setTab('learn')">📘 Learn</button>
+  <button data-t="cards" onclick="setTab('cards')">🃏 Cards</button>
+  <button data-t="quiz" onclick="setTab('quiz')">❓ Quiz</button>
+  <button data-t="type" onclick="setTab('type')">⌨️ Type</button>
+  <button data-t="search" onclick="setTab('search')">🔍 Search</button>
+  <button data-t="sounds" onclick="setTab('sounds')">🗣 Sounds</button>
+  <button data-t="progress" onclick="setTab('progress')">📊 Progress</button>
+</nav>
+<div class="bar">
+  <label>Practice level <select id="lv" onchange="st.lvl=this.value;setTab(st.tab)">
+    <option value="all">All unlocked</option><option value="A1">A1</option><option value="A2">A2</option><option value="B1">B1</option><option value="B2">B2</option><option value="C1">C1</option><option value="C2">C2</option>
+  </select></label>
+  <label><input type="checkbox" checked onchange="document.body.classList.toggle('nofa',!this.checked)"> Persian</label>
+  <label><input type="checkbox" onchange="document.body.classList.toggle('dark',this.checked)"> Dark</label>
+  <label><input type="checkbox" id="acc" checked> Ignore accents</label>
+  <button onclick="speak('Hola, ¿cómo estás?')">🔈 Test audio</button>
+</div>
+<main id="main"></main>
+
+<script>
+const LEVELS=[
+{c:'A1',n:'Beginner',lessons:[
+ {t:'Greetings',g:'Spanish has an informal "tú" and a formal "usted" for "you". Use usted with strangers and elders.',w:[['Hola','Hello','سلام'],['Buenos días','Good morning','صبح بخیر'],['¿Cómo estás?','How are you?','حالت چطور است؟'],['Hasta luego','See you later','بعداً می‌بینمت'],['Adiós','Goodbye','خداحافظ']]},
+ {t:'Introductions',g:'"Me llamo" means "I call myself". "Soy" (I am) is for identity and origin; "vivo en" means "I live in".',w:[['Me llamo Ali','My name is Ali','اسم من علی است'],['Soy iraní','I am Iranian','من ایرانی هستم'],['Vivo en Teherán','I live in Tehran','من در تهران زندگی می‌کنم'],['¿De dónde eres?','Where are you from?','اهل کجایی؟'],['Mucho gusto','Nice to meet you','از آشنایی‌تان خوشحالم']]},
+ {t:'Numbers & being',g:'"Ser" is for permanent traits and identity. "Estar" is for location and temporary states (you will meet it soon).',w:[['Uno, dos, tres','One, two, three','یک، دو، سه'],['Diez','Ten','ده'],['Veinte','Twenty','بیست'],['Cien','One hundred','صد'],['Soy estudiante','I am a student','من دانشجو هستم']]},
+ {t:'Food & wanting',g:'"Quiero" (I want) + noun. "Tengo hambre" literally means "I have hunger", so use tener, not ser.',w:[['Agua','Water','آب'],['Pan','Bread','نان'],['Café','Coffee','قهوه'],['Quiero una manzana','I want an apple','یک سیب می‌خواهم'],['Tengo hambre','I am hungry','گرسنه‌ام']]}
+]},
+{c:'A2',n:'Elementary',lessons:[
+ {t:'Daily routine',g:'Reflexive verbs use "me/te/se" before the verb: "me levanto" (I get myself up = I get up).',w:[['Me levanto a las siete','I get up at seven','ساعت هفت از خواب بیدار می‌شوم'],['Me ducho por la mañana','I shower in the morning','صبح‌ها دوش می‌گیرم'],['Desayuno pan','I have bread for breakfast','صبحانه نان می‌خورم'],['Me acuesto temprano','I go to bed early','زود می‌خوابم'],['Trabajo ocho horas','I work eight hours','هشت ساعت کار می‌کنم']]},
+ {t:'Past tense',g:'The preterite (pretérito) describes completed actions: "fui" (I went), "comí" (I ate).',w:[['Ayer fui al cine','Yesterday I went to the cinema','دیروز به سینما رفتم'],['Comí en casa','I ate at home','در خانه غذا خوردم'],['Viví en Madrid','I lived in Madrid','در مادرید زندگی کردم'],['¿Qué hiciste el fin de semana?','What did you do on the weekend?','آخر هفته چه کار کردی؟'],['Llegué tarde','I arrived late','دیر رسیدم']]},
+ {t:'Directions',g:'Informal commands drop the final s form: "gira" (turn), "sigue" (continue). "Cruza" (cross).',w:[['Gira a la derecha','Turn right','به راست بپیچ'],['Sigue recto','Go straight','مستقیم برو'],['¿Dónde está la estación?','Where is the station?','ایستگاه کجاست؟'],['Está cerca','It is nearby','نزدیک است'],['Cruza el puente','Cross the bridge','از روی پل رد شو']]},
+ {t:'Health',g:'Pain uses "me duele" + singular noun, or "me duelen" + plural: "me duele la cabeza", "me duelen los pies".',w:[['Me duele la cabeza','My head hurts','سرم درد می‌کند'],['Tengo fiebre','I have a fever','تب دارم'],['Necesito un médico','I need a doctor','به پزشک نیاز دارم'],['Tomo medicina','I take medicine','دارو مصرف می‌کنم'],['Me siento mejor','I feel better','حالم بهتر است']]}
+]},
+{c:'B1',n:'Intermediate',lessons:[
+ {t:'Subjunctive basics',g:'After expressions of wish, doubt, emotion or necessity, Spanish uses the subjunctive: "quiero que vengas" (I want you to come).',w:[['Espero que estés bien','I hope you are well','امیدوارم حالت خوب باشد'],['Quiero que vengas','I want you to come','می‌خواهم بیایی'],['Es importante que estudies','It is important that you study','مهم است که درس بخوانی'],['No creo que sea verdad','I do not think it is true','فکر نمی‌کنم درست باشد'],['Dudo que llegue a tiempo','I doubt he will arrive on time','شک دارم به موقع برسد']]},
+ {t:'Preterite vs imperfect',g:'Preterite = a completed event; imperfect = background, habits or ongoing past. "Llovía cuando salí" = it was raining when I left.',w:[['Cuando era niño, jugaba al fútbol','When I was a child, I played football','وقتی بچه بودم فوتبال بازی می‌کردم'],['Ayer llovió mucho','It rained a lot yesterday','دیروز خیلی باران بارید'],['Llovía cuando salí','It was raining when I left','وقتی بیرون رفتم باران می‌آمد'],['Vivía en Shiraz de niño','I lived in Shiraz as a child','بچه بودم در شیراز زندگی می‌کردم'],['Ya había comido cuando llegó','I had already eaten when he arrived','وقتی رسید من غذا خورده بودم']]},
+ {t:'Work & opinions',g:'Use "creo que" (I think that) with indicative, and "me parece que" to soften a view.',w:[['Creo que tienes razón','I think you are right','فکر می‌کنم حق با تو است'],['Me parece una buena idea','It seems like a good idea to me','به نظرم ایده خوبی است'],['Estoy de acuerdo contigo','I agree with you','با تو موافقم'],['Tengo una entrevista mañana','I have an interview tomorrow','فردا مصاحبه کاری دارم'],['Me han ofrecido el puesto','They have offered me the position','پست را به من پیشنهاد داده‌اند']]},
+ {t:'Conditionals',g:'"Si" + imperfect subjunctive + conditional: "si tuviera dinero, viajaría" (if I had money, I would travel).',w:[['Si tuviera dinero, viajaría','If I had money, I would travel','اگر پول داشتم سفر می‌کردم'],['Me gustaría aprender español','I would like to learn Spanish','دوست دارم اسپانیایی یاد بگیرم'],['¿Podrías ayudarme?','Could you help me?','می‌توانی کمکم کنی؟'],['Debería descansar más','I should rest more','باید بیشتر استراحت کنم'],['Sería mejor esperar','It would be better to wait','بهتر است صبر کنیم']]}
+]},
+{c:'B2',n:'Upper intermediate',lessons:[
+ {t:'Passive & se',g:'"Se + verb" often means a passive or impersonal idea: "se habla español" (Spanish is spoken).',w:[['Se habla español aquí','Spanish is spoken here','اینجا اسپانیایی صحبت می‌شود'],['Se vende casa','House for sale','خانه برای فروش است'],['Fue construido en 1900','It was built in 1900','در سال ۱۹۰۰ ساخته شد'],['Se dice que llegará mañana','It is said that he will arrive tomorrow','گفته می‌شود فردا می‌رسد'],['Los resultados fueron publicados ayer','The results were published yesterday','نتایج دیروز منتشر شد']]},
+ {t:'Perfect & subjunctive',g:'Present perfect subjunctive after emotion or doubt: "me alegro de que hayas venido" (I am glad you came).',w:[['He visto esa película','I have seen that film','آن فیلم را دیده‌ام'],['Ojalá hayas tenido un buen día','I hope you had a good day','کاش امروز روز خوبی داشته باشی'],['Me alegro de que hayas venido','I am glad you came','خوشحالم که آمدی'],['Todavía no he terminado','I have not finished yet','هنوز تمام نکرده‌ام'],['Es posible que haya llamado','It is possible he called','ممکن است زنگ زده باشد']]},
+ {t:'Business',g:'Formal letters open with "Le escribo para" (I am writing to you to) and close with "Quedo a la espera" (I await).',w:[['Le escribo para','I am writing to you to','برای شما می‌نویسم که'],['Adjunto el documento','I attach the document','سند پیوست است'],['Quedo a la espera de su respuesta','I look forward to your reply','منتظر پاسخ شما هستم'],['Hemos llegado a un acuerdo','We have reached an agreement','به توافق رسیده‌ایم'],['Necesitamos reducir costos','We need to reduce costs','باید هزینه‌ها را کاهش دهیم']]},
+ {t:'Connectors',g:'Connectors link ideas: "sin embargo" (however), "por lo tanto" (therefore), "a pesar de que" (despite).',w:[['Sin embargo','However','با این حال'],['No obstante','Nevertheless','با وجود این'],['Por lo tanto','Therefore','بنابراین'],['A pesar de que','Despite the fact that','با وجود این که'],['En cuanto a','As for','در مورد']]}
+]},
+{c:'C1',n:'Advanced',lessons:[
+ {t:'Advanced subjunctive',g:'Counterfactuals in the past use "hubiera + participle" (pluperfect subjunctive) with "habría" in the result.',w:[['Si hubiera sabido, no habría venido','If I had known, I would not have come','اگر می‌دانستم نمی‌آمدم'],['Ojalá pudiera ayudarte','I wish I could help you','کاش می‌توانستم کمکت کنم'],['Como si nada hubiera pasado','As if nothing had happened','انگار هیچ اتفاقی نیفتاده'],['Sea como sea, lo haré','Whatever happens, I will do it','هر طور که هست انجامش می‌دهم'],['Por más que lo intente, no puedo','No matter how hard I try, I cannot','هر قدر تلاش کنم نمی‌توانم']]},
+ {t:'Idioms I',g:'Idioms cannot be translated word by word. Learn them as complete phrases.',w:[['Estar hecho polvo','To be exhausted','له و خسته بودن'],['Dar en el clavo','To hit the nail on the head','درست به هدف زدن'],['Ser pan comido','To be a piece of cake','کار خیلی آسانی بودن'],['No tener pelos en la lengua','To speak frankly','صریح حرف زدن'],['Estar en la luna','To be absent-minded','حواس‌پرت بودن']]},
+ {t:'Discourse markers',g:'Markers signal the speaker\'s attitude: "al fin y al cabo" (after all), "pese a todo" (in spite of everything).',w:[['Ni siquiera','Not even','حتی'],['Al fin y al cabo','After all','در نهایت'],['Pese a todo','In spite of everything','با همه این‌ها'],['Dicho sea de paso','By the way','راستی'],['Cabe destacar que','It should be noted that','لازم به ذکر است که']]},
+ {t:'Society & debate',g:'Academic and public debate uses nominal phrases and set collocations such as "poner en tela de juicio".',w:[['La brecha digital','The digital divide','شکاف دیجیتال'],['Un tema candente','A hot-button topic','موضوع داغ'],['Poner en tela de juicio','To call into question','زیر سؤال بردن'],['Sentar precedente','To set a precedent','سابقه ایجاد کردن'],['Hacer hincapié en','To emphasize','تأکید کردن بر']]}
+]},
+{c:'C2',n:'Mastery',lessons:[
+ {t:'Literary & subtle',g:'Literary Spanish favours fixed expressions and subtle emphasis that native speakers use naturally.',w:[['Me tomó por sorpresa','It took me by surprise','غافلگیرم کرد'],['Pasar por alto','To overlook','نادیده گرفتن'],['Con creces','More than enough','با شایستگی تمام'],['Tirar la casa por la ventana','To go all out','برای تشریفات خرج کردن'],['Hacerse el sueco','To pretend not to notice','وانمود کردن که ندیده‌ای']]},
+ {t:'Counterfactual nuance',g:'"De no haber sido por" is a formal way to express "had it not been for".',w:[['De no haber sido por ti, habría fracasado','Had it not been for you, I would have failed','اگر تو نبودی شکست می‌خوردم'],['Lo que es peor','What is worse','بدتر از همه این که'],['Ni más ni menos','Exactly','دقیقاً همین‌طور'],['Bien que mal','One way or another','به هر ترتیب'],['Estar en vilo','To be on edge','در تعلیق و نگرانی بودن']]},
+ {t:'Professional register',g:'Formal reports use impersonal constructions such as "cabe señalar" and "resulta imprescindible".',w:[['Cabe señalar','It is worth noting','شایان ذکر است'],['Resulta imprescindible','It is essential','ضروری است'],['Sería conveniente revisar el plan','It would be advisable to review the plan','بهتر است برنامه بازبینی شود'],['Según reza el informe','As the report states','طبق گزارش'],['Se trata de un asunto delicado','This is a delicate matter','موضوع حساسی است']]},
+ {t:'Regional variants',g:'Spanish varies by region. Vos (Argentina) and Mexican or Caribbean slang are common in everyday speech.',w:[['Vos sabés','You know (Argentina)','تو می‌دانی'],['¿Qué onda?','What is up? (Mexico)','چه خبر؟'],['Está de chamba','He is working (Mexico)','سر کار است'],['Chévere','Cool (Caribbean)','باحال'],['Guay','Cool (Spain)','باحال']]}
+]}
+];
+
+const PH={'Hola':'ˈo.la','Buenos días':'ˈbwe.nos ˈði.as','¿Cómo estás?':'ˈko.mo esˈtas','Hasta luego':'ˈas.ta ˈlwe.go','Adiós':'a.ˈðjos','Me llamo Ali':'me ˈʝa.mo ˈa.li','Soy iraní':'soj i.ɾa.ˈni','Vivo en Teherán':'ˈbi.βo en te.eˈɾan','¿De dónde eres?':'de ˈdon.de ˈe.ɾes','Mucho gusto':'ˈmu.tʃo ˈɣus.to','Uno, dos, tres':'ˈu.no, dos, tɾes','Diez':'ˈdjes','Veinte':'ˈbein.te','Cien':'ˈsjen','Soy estudiante':'soj es.tu.ˈðjan.te','Agua':'ˈa.ɣwa','Pan':'pan','Café':'ka.ˈfe','Quiero una manzana':'ˈkje.ɾo ˈu.na man.ˈsa.na','Tengo hambre':'ˈteŋ.go ˈam.bɾe','Me levanto a las siete':'me le.ˈβan.to a las ˈsje.te','Me ducho por la mañana':'me ˈdu.tʃo poɾ la ma.ˈɲa.na','Desayuno pan':'de.sa.ˈʝu.no pan','Me acuesto temprano':'me a.ˈkwes.to tem.ˈpɾa.no','Trabajo ocho horas':'tɾa.ˈβa.xo ˈo.tʃo ˈo.ɾas','Ayer fui al cine':'a.ˈʝeɾ fwi al ˈsi.ne','Comí en casa':'ko.ˈmi en ˈka.sa','Viví en Madrid':'bi.ˈbi en ma.ˈðɾið','¿Qué hiciste el fin de semana?':'ke ˈi.sis.te el fin de se.ˈma.na','Llegué tarde':'ʝe.ˈɣe ˈtaɾ.de','Gira a la derecha':'ˈxi.ɾa a la de.ɾe.ˈtʃa','Sigue recto':'ˈsi.ɣe ˈɾek.to','¿Dónde está la estación?':'ˈdon.de es.ˈta la es.ta.ˈsjon','Está cerca':'es.ˈta ˈseɾ.ka','Cruza el puente':'ˈkɾu.sa el ˈpwen.te','Me duele la cabeza':'me ˈdwe.le la ka.ˈβe.sa','Tengo fiebre':'ˈteŋ.go ˈfje.βɾe','Necesito un médico':'ne.se.ˈsi.to un ˈme.ði.ko','Tomo medicina':'ˈto.mo me.ði.ˈsi.na','Me siento mejor':'me ˈsjen.to me.ˈxoɾ','Espero que estés bien':'es.ˈpe.ɾo ke es.ˈtes ˈbjen','Quiero que vengas':'ˈkje.ɾo ke ˈben.gas','Es importante que estudies':'es im.poɾ.ˈtan.te ke es.tu.ˈðjes','No creo que sea verdad':'no ˈkɾe.o ke ˈse.a βeɾ.ˈðad','Dudo que llegue a tiempo':'ˈðu.ðo ke ˈʝe.ɣe a ˈtjem.po','Cuando era niño, jugaba al fútbol':'ˈkwan.do ˈe.ɾa ˈɲi.ɲo, xu.ˈɣa.βa al ˈfut.βol','Ayer llovió mucho':'a.ˈʝeɾ ʝo.ˈβjo ˈmu.tʃo','Llovía cuando salí':'ʝo.ˈβi.a ˈkwan.do sa.ˈli','Vivía en Shiraz de niño':'bi.ˈβi.a en ʃi.ˈɾas de ˈɲi.ɲo','Ya había comido cuando llegó':'ʝa a.ˈβi.a ko.mi.ˈðo ˈkwan.do ʝe.ˈɣo','Creo que tienes razón':'ˈkɾe.o ke ˈtje.nes ɾa.ˈson','Me parece una buena idea':'me pa.ˈɾe.se ˈu.na ˈbwe.na i.ˈðe.a','Estoy de acuerdo contigo':'es.ˈtoj de a.ˈkweɾ.ðo kon.ˈti.go','Tengo una entrevista mañana':'ˈteŋ.go ˈu.na en.tɾe.ˈβis.ta ma.ˈɲa.na','Me han ofrecido el puesto':'me an o.fɾe.ˈsi.ðo el ˈpwes.to','Si tuviera dinero, viajaría':'si tu.ˈβje.ɾa di.ˈne.ɾo, bja.xa.ˈɾi.a','Me gustaría aprender español':'me ɣus.ta.ˈɾi.a a.pɾen.ˈdeɾ es.pa.ˈɲol','¿Podrías ayudarme?':'po.ˈðɾi.as a.ʝu.ˈðaɾ.me','Debería descansar más':'de.βe.ˈɾi.a des.kan.ˈsaɾ ˈmas','Sería mejor esperar':'se.ˈɾi.a me.ˈxoɾ es.pe.ˈɾaɾ','Se habla español aquí':'se ˈa.βla es.pa.ˈɲol a.ˈki','Se vende casa':'se ˈben.de ˈka.sa','Fue construido en 1900':'fwe kons.tɾu.ˈi.ðo en ˈmil ˈno.βe.ˈsjen.tos','Se dice que llegará mañana':'se ˈdi.se ke ʝe.ɣa.ˈɾa ma.ˈɲa.na','Los resultados fueron publicados ayer':'los ɾe.sul.ˈta.dos ˈfwe.ɾon pu.βli.ˈka.dos a.ˈʝeɾ','He visto esa película':'e ˈβis.to ˈe.sa pe.ˈli.ku.la','Ojalá hayas tenido un buen día':'o.xa.ˈla ˈa.jas te.ˈni.ðo un ˈbwen ˈdi.a','Me alegro de que hayas venido':'me a.ˈle.ɣɾo de ke ˈa.jas be.ˈni.ðo','Todavía no he terminado':'to.ða.ˈβi.a no e teɾ.mi.ˈna.ðo','Es posible que haya llamado':'es po.ˈsi.βle ke ˈa.ʝa ʝa.ˈma.ðo','Le escribo para':'le es.ˈkɾi.βo ˈpa.ɾa','Adjunto el documento':'að.ˈxun.to el do.ku.ˈmen.to','Quedo a la espera de su respuesta':'ˈke.ðo a la es.ˈpe.ɾa de su ɾes.ˈpwes.ta','Hemos llegado a un acuerdo':'ˈe.mos ʝe.ˈɣa.ðo a un a.ˈkweɾ.ðo','Necesitamos reducir costos':'ne.se.si.ˈta.mos ɾe.ðu.ˈsiɾ ˈkos.tos','Sin embargo':'sin em.ˈβaɾ.go','No obstante':'no obs.ˈtan.te','Por lo tanto':'poɾ lo ˈtan.to','A pesar de que':'a pe.ˈsaɾ de ke','En cuanto a':'en ˈkwan.to a','Si hubiera sabido, no habría venido':'si u.ˈβje.ɾa sa.ˈβi.ðo, no a.ˈβɾi.a be.ˈni.ðo','Ojalá pudiera ayudarte':'o.xa.ˈla pu.ˈðje.ɾa a.ʝu.ˈðaɾ.te','Como si nada hubiera pasado':'ˈko.mo si ˈna.ða u.ˈβje.ɾa pa.ˈsa.ðo','Sea como sea, lo haré':'ˈse.a ˈko.mo ˈse.a, lo a.ˈɾe','Por más que lo intente, no puedo':'poɾ ˈmas ke lo in.ˈten.te no ˈpwe.ðo','Estar hecho polvo':'es.ˈtaɾ ˈe.tʃo ˈpol.βo','Dar en el clavo':'daɾ en el ˈkla.βo','Ser pan comido':'seɾ pan ko.ˈmi.ðo','No tener pelos en la lengua':'no te.ˈneɾ ˈpe.los en la ˈleŋ.gwa','Estar en la luna':'es.ˈtaɾ en la ˈlu.na','Ni siquiera':'ni ˈsi.kje.ɾa','Al fin y al cabo':'al fin i al ˈka.βo','Pese a todo':'ˈpe.se a ˈto.ðo','Dicho sea de paso':'ˈdi.tʃo ˈse.a de ˈpa.so','Cabe destacar que':'ˈka.βe des.ta.ˈkaɾ ke','La brecha digital':'la ˈbɾe.tʃa di.xi.ˈtal','Un tema candente':'un ˈte.ma kan.ˈden.te','Poner en tela de juicio':'po.ˈneɾ en ˈte.la de ˈxwi.sjo','Sentar precedente':'sen.ˈtaɾ pɾe.se.ˈden.te','Hacer hincapié en':'a.ˈseɾ in.ka.ˈpje en','Me tomó por sorpresa':'me to.ˈmo poɾ soɾ.ˈpɾe.sa','Pasar por alto':'pa.ˈsaɾ poɾ ˈal.to','Con creces':'kon ˈkɾe.ses','Tirar la casa por la ventana':'ti.ˈɾaɾ la ˈka.sa poɾ la ben.ˈta.na','Hacerse el sueco':'a.ˈseɾ.se el ˈswe.ko','De no haber sido por ti, habría fracasado':'de no a.ˈβeɾ ˈsi.ðo poɾ ti, a.ˈβɾi.a fɾa.ka.ˈsa.ðo','Lo que es peor':'lo ke es pe.ˈoɾ','Ni más ni menos':'ni ˈmas ni ˈme.nos','Bien que mal':'ˈbjen ke ˈmal','Estar en vilo':'es.ˈtaɾ en ˈbi.lo','Cabe señalar':'ˈka.βe se.ɲa.ˈlaɾ','Resulta imprescindible':'re.ˈsul.ta im.pɾes.ˈsin.di.βle','Sería conveniente revisar el plan':'se.ˈɾi.a kon.βe.ˈnjen.te ɾe.βi.ˈsaɾ el ˈplan','Según reza el informe':'se.ˈɣun ˈre.sa el in.ˈfoɾ.me','Se trata de un asunto delicado':'se ˈtɾa.ta de un a.ˈsun.to de.li.ˈka.ðo','Vos sabés':'bos sa.ˈβes','¿Qué onda?':'ke ˈon.da','Está de chamba':'es.ˈta de ˈtʃam.ba','Chévere':'ˈtʃe.βe.ɾe','Guay':'ɣwaj'};
+const SND=[['a','/a/','like «ا» in آب (short, pure, never glides)','agua'],['e','/e/','like «ِ» in بِله (short, clean)','bien'],['i','/i/','like «ی» in ایران (ee)','sí'],['o','/o/','like «ُ» in گُل (pure o, no «او» glide)','oso'],['u','/u/','like «و» in دور (oo)','uno'],['j, g before e/i','/x/','like «خ» in خانه (throat sound)','jamón'],['ñ','/ɲ/','like «ny» in canyon (no exact Persian match)','año'],['ll, y','/ʝ/','like «ی» in یار (usually y)','llama'],['rr','/r/','strong rolled r, like Persian ر in trilled speech','perro'],['r','/ɾ/','one quick tap, like Persian ر in رفتن','pero'],['c before e/i, z','/s/ (Latin America) or /θ/ (Spain)','like «س» (Latin America); Spain uses a soft «th»','cine'],['b, v','/b/','both letters sound the same, soft «ب»','vamos'],['h','silent','never pronounced','hola'],['qu','/k/','«ک»; the u is silent','queso'],['ch','/tʃ/','like «چ» in چای','chico'],['x','/ks/','like «کس»','examen']];
+const L=[];
+LEVELS.forEach(lv=>lv.lessons.forEach(x=>{const i=L.length;L.push({i,c:lv.c,t:x.t,g:x.g,w:x.w.map((v,k)=>({id:i+'.'+k,es:v[0],en:v[1],fa:v[2]}))})}));
+
+const $=id=>document.getElementById(id);
+let S;try{S=JSON.parse(localStorage.getItem('espanol-v2'))}catch(e){}
+S=Object.assign({pass:{},known:{},xp:0,streak:0,last:''},S||{});
+const st={tab:'learn',li:null,test:null,lvl:'all',deck:[],di:0,flip:false,qs:[],qi:0,qscore:0,qpick:null,tword:null,tmode:'fa',thint:0,tfb:'',search:''};
+
+function save(){try{localStorage.setItem('espanol-v2',JSON.stringify(S))}catch(e){}}
+function passed(i){return (S.pass[i]||0)>=80}
+function unlocked(i){return i===0||passed(i-1)}
+function pool(){return L.filter(x=>unlocked(x.i)&&(st.lvl==='all'||x.c===st.lvl)).flatMap(x=>x.w)}
+function shuffle(a){return a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(p=>p[1])}
+function xp(n){S.xp+=n;const today=new Date().toDateString();if(S.last!==today){const y=new Date(Date.now()-864e5).toDateString();S.streak=S.last===y?S.streak+1:1;S.last=today}save()}
+let VOICE=null,KEEP=null;
+function pickVoice(){if(!('speechSynthesis' in window))return;const v=speechSynthesis.getVoices();VOICE=v.find(x=>/^es[-_](ES|MX|US)/i.test(x.lang))||v.find(x=>/^es/i.test(x.lang))||null}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+function toast(m){const d=document.createElement('div');d.className='toast';d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),3500)}
+function speak(t){
+ if(!('speechSynthesis' in window)){toast('Audio is not supported in this browser.');return}
+ if(!VOICE&&speechSynthesis.getVoices().length)pickVoice();
+ const u=new SpeechSynthesisUtterance(t);KEEP=u;u.lang='es-ES';if(VOICE)u.voice=VOICE;u.rate=.8;
+ u.onerror=e=>{if(e.error!=='interrupted'&&e.error!=='canceled')toast('Audio failed. Check the volume, or install a Spanish voice on your device.')};
+ if(!VOICE&&speechSynthesis.getVoices().length)toast('No Spanish voice on this device; using the default voice.');
+ speechSynthesis.cancel();speechSynthesis.resume();setTimeout(()=>speechSynthesis.speak(u),60);
+}
+function row(w){return `<div class="row"><div class="es">${w.es}${PH[w.es]?` <span class="ph">/${PH[w.es]}/</span>`:''}<button class="sp" data-s="${w.es}" onclick="speak(this.dataset.s)">🔊</button></div><div class="tr"><span class="en">(${w.en})</span> <span class="fa" dir="rtl">${w.fa}</span></div></div>`}
+
+function learnView(){
+ if(st.test)return testView();
+ if(st.li===null){
+  return LEVELS.map(lv=>`<h2>${lv.c} · ${lv.n}</h2>`+L.filter(x=>x.c===lv.c).map(x=>{
+   const ok=unlocked(x.i),ic=passed(x.i)?'✅':ok?'▶':'🔒';
+   return `<div class="card ${ok?'click':''}" ${ok?`onclick="st.li=${x.i};render()"`:''} style="${ok?'':'opacity:.55'}"><b>${ic} ${x.t}</b><div class="muted">${x.w.length} phrases${S.pass[x.i]?` · best ${S.pass[x.i]}%`:''}${ok?'':' · pass the previous lesson to unlock'}</div></div>`}).join('')).join('');
+ }
+ const x=L[st.li];
+ return `<button class="ghost" onclick="st.li=null;render()">← All lessons</button><div class="muted" style="margin-top:8px">Level ${x.c}</div><h2>${x.t}</h2><p class="note">📘 ${x.g}</p>`+x.w.map(row).join('')+`<button onclick="startTest(${x.i})" style="margin-top:10px">📝 Lesson test (80% to pass)</button>`;
+}
+
+function startTest(i){
+ const words=L[i].w,all=L.filter(x=>x.c===L[i].c).flatMap(x=>x.w);
+ st.test={i,k:0,score:0,pick:null,qs:shuffle(words).map(w=>{const rev=Math.random()<.4;const d=shuffle(all.filter(x=>x.id!==w.id)).slice(0,3).map(x=>rev?x.es:x.en);return {w,rev,a:rev?w.es:w.en,opts:shuffle([rev?w.es:w.en,...d])}})};
+ render();
+}
+function testView(){
+ const T=st.test;
+ if(T.k>=T.qs.length){const p=Math.round(T.score/T.qs.length*100);return `<h2>${p}% ${p>=80?'🎉 Passed! Next lesson unlocked':'Not yet. You need 80%.'}</h2><p class="muted">${T.score} of ${T.qs.length} correct</p><button onclick="startTest(${T.i})">🔁 Retry test</button> <button class="ghost" onclick="st.test=null;render()">Back to lesson</button>`}
+ const q=T.qs[T.k],done=T.pick!==null;
+ return `<p class="muted">${L[T.i].t} · question ${T.k+1}/${T.qs.length}</p><div class="card"><div class="big">${q.rev?q.w.en:q.w.es}</div>${q.rev?'':`<button class="sp" data-s="${q.w.es}" onclick="speak(this.dataset.s)">🔊</button>`}</div>`+
+ q.opts.map(o=>{let c='';if(done){if(o===q.a)c='good';else if(o===T.pick)c='bad'}return `<button class="opt ${c}" ${done?'disabled':''} data-o="${o}" onclick="pickT(this.dataset.o)">${o}</button>`}).join('')+
+ (done?`<div class="fb">${T.pick===q.a?'✅ Correct':'❌ Answer: '+q.a}</div><p class="fa" dir="rtl">${q.w.fa}</p><button onclick="nextT()">Next →</button>`:'');
+}
+function pickT(o){const T=st.test;if(T.pick!==null)return;T.pick=o;if(o===T.qs[T.k].a)T.score++;render()}
+function nextT(){
+ const T=st.test;T.k++;T.pick=null;
+ if(T.k>=T.qs.length){const p=Math.round(T.score/T.qs.length*100);const was=passed(T.i);S.pass[T.i]=Math.max(S.pass[T.i]||0,p);if(p>=80&&!was)xp(30);save()}
+ render();
+}
+
+function cardsView(){
+ if(!st.deck.length)return '<p>Unlock a lesson to practise cards.</p>';
+ const w=st.deck[st.di];
+ const face=st.flip?`<div class="en">(${w.en})</div><div class="fa big" dir="rtl">${w.fa}</div>`:`<div class="big">${w.es}</div><div class="ph" style="text-align:center">/${PH[w.es]||''}/</div><button class="sp" data-s="${w.es}" onclick="event.stopPropagation();speak(this.dataset.s)">🔊 Listen</button><div class="muted">Tap to reveal</div>`;
+ return `<div class="top"><span class="muted">${st.di+1}/${st.deck.length}</span><button onclick="setTab('cards')">🔀 Shuffle</button></div><div class="flash click" onclick="st.flip=!st.flip;render()">${face}</div><div class="btns"><button onclick="rate(false)">🔁 Review again</button><button onclick="rate(true)">✅ I know it (+2 XP)</button></div>`;
+}
+function rate(k){const w=st.deck[st.di];if(k){S.known[w.id]=1;xp(2)}st.di=(st.di+1)%st.deck.length;st.flip=false;save();render()}
+
+function startQuiz(){const p=shuffle(pool());st.qs=p.slice(0,Math.min(10,p.length)).map(w=>({w,opts:shuffle([w.en,...shuffle(p.filter(x=>x.id!==w.id)).slice(0,3).map(x=>x.en)])}));st.qi=0;st.qscore=0;st.qpick=null}
+function quizView(){
+ if(!st.qs.length)return '<p>Unlock a lesson to practise.</p>';
+ if(st.qi>=st.qs.length)return `<h2>Score: ${st.qscore}/${st.qs.length}</h2><button onclick="startQuiz();render()">🔁 New quiz</button>`;
+ const q=st.qs[st.qi],done=st.qpick!==null;
+ return `<p class="muted">Question ${st.qi+1}/${st.qs.length} · Score ${st.qscore}</p><div class="card"><div class="big">${q.w.es}</div><button class="sp" data-s="${q.w.es}" onclick="speak(this.dataset.s)">🔊</button></div>`+
+ q.opts.map(o=>{let c='';if(done){if(o===q.w.en)c='good';else if(o===st.qpick)c='bad'}return `<button class="opt ${c}" ${done?'disabled':''} data-o="${o}" onclick="pickQ(this.dataset.o)">${o}</button>`}).join('')+
+ (done?`<p class="fa" dir="rtl">${q.w.fa}</p><button onclick="st.qi++;st.qpick=null;render()">Next →</button>`:'');
+}
+function pickQ(o){if(st.qpick!==null)return;st.qpick=o;if(o===st.qs[st.qi].w.en){st.qscore++;xp(5)}render()}
+
+function nextType(){const p=pool();st.tword=p[Math.floor(Math.random()*p.length)];st.tmode=Math.random()<.5?'fa':'en';st.thint=0;st.tfb=''}
+function typeView(){
+ const w=st.tword;if(!w)return '<p>Unlock a lesson to practise.</p>';
+ const prompt=st.tmode==='fa'?`<div class="fa big" dir="rtl">${w.fa}</div>`:`<div class="big">${w.en}</div>`;
+ return `<p class="muted">Type the Spanish for:</p><div class="card">${prompt}</div><input type="text" id="tin" placeholder="Escribe aquí… (type here)" autocomplete="off" onkeydown="if(event.key==='Enter')checkT()"><div class="btns"><button onclick="hintT()">💡 Hint</button><button onclick="checkT()">Check</button><button onclick="nextType();render()">Next →</button></div><div class="fb">${st.tfb}</div>${st.thint?`<p class="muted">Hint: ${w.es.slice(0,st.thint)}…</p>`:''}`;
+}
+const norm=s=>{let x=s.trim().toLowerCase().replace(/[¿?¡!.,]/g,'').replace(/\s+/g,' ');return $('acc').checked?x.normalize('NFD').replace(/[\u0300-\u036f]/g,''):x};
+function checkT(){const v=$('tin')?$('tin').value:'',w=st.tword;if(!v||st.tfb)return;const ok=norm(v)===norm(w.es);st.tfb=ok?'✅ Correct! +5 XP':'❌ Answer: '+w.es;if(ok)xp(5);render()}
+function hintT(){st.thint=Math.min(st.thint+1,st.tword.es.length);render()}
+
+function searchView(){return `<input type="text" placeholder="Search Spanish, English or Persian…" value="${st.search}" oninput="st.search=this.value;$('res').innerHTML=results()"><div id="res">${results()}</div>`}
+function results(){const q=st.search.trim().toLowerCase();if(!q)return '<p class="muted">Type to search all phrases.</p>';const r=L.flatMap(x=>x.w).filter(w=>[w.es,w.en,w.fa].some(v=>v.toLowerCase().includes(q)));return r.length?r.slice(0,40).map(row).join(''):'<p class="muted">No matches.</p>'}
+
+function progressView(){
+ const rows=LEVELS.map(lv=>{const ls=L.filter(x=>x.c===lv.c),n=ls.filter(x=>passed(x.i)).length,p=Math.round(n/ls.length*100);return `<div class="card"><b>${lv.c} · ${lv.n}</b><div class="bar2"><div style="width:${p}%"></div></div><div class="muted">${n}/${ls.length} lessons passed</div></div>`}).join('');
+ const words=L.filter(x=>passed(x.i)).reduce((a,x)=>a+x.w.length,0);
+ return `<div class="stats2"><div>⭐ ${S.xp} XP</div><div>🔥 ${S.streak} day streak</div><div>📚 ${words} phrases learned</div></div>${rows}<p class="muted">Pass each lesson test with 80% or more to unlock the next one. Practise 15 minutes a day.</p><button class="ghost" onclick="if(confirm('Reset all progress?')){S={pass:{},known:{},xp:0,streak:0,last:''};save();render()}">Reset progress</button>`;
+}
+
+function soundsView(){
+ return `<h2>Spanish sounds for Persian speakers</h2><p class="note">Spanish is almost fully phonetic: each letter has one sound, and vowels are short and pure. Tap 🔊 to hear each example.</p>`+
+ SND.map(s=>`<div class="row"><div class="es">${s[0]} <span class="ph">${s[1]}</span> <button class="sp" data-s="${s[3]}" onclick="speak(this.dataset.s)">🔊 ${s[3]}</button></div><div class="tr">${s[2]}</div></div>`).join('')+
+ `<h2>Stress rules</h2><p class="note">Words ending in a vowel, n or s stress the second-to-last syllable: CA-sa, HA-blan. Other endings stress the last syllable: us-TED, es-pa-ÑOL. A written accent mark overrides this, as in está or ¿Qué?</p>`;
+}
+function setTab(t){
+ st.tab=t;
+ if(t==='cards'){st.deck=shuffle(pool());st.di=0;st.flip=false}
+ if(t==='quiz')startQuiz();
+ if(t==='type')nextType();
+ render();
+}
+function render(){
+ $('xp').textContent=S.xp;$('streak').textContent=S.streak;
+ document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===st.tab));
+ const views={learn:learnView,cards:cardsView,quiz:quizView,type:typeView,search:searchView,sounds:soundsView,progress:progressView};
+ $('main').innerHTML=views[st.tab]();
+}
+setTab('learn');
+</script>
+</body>
+</html>
